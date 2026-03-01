@@ -28,7 +28,7 @@ userSchema.pre("save", async function () {
 
 // Hook for indentify previous hash passowrd is valid or not
 userSchema.methods.comparePassword = async function (password) {
-    return await bcrypt.compare(password, this.passowrd);
+    return await bcrypt.compare(password, this.password);
 }
 
 export const userModel = mongoose.model("user", userSchema);
