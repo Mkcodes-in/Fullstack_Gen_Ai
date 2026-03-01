@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
+import { authRoute } from './routes/user.route.js';
 
 export const app = express();
 
@@ -11,3 +12,8 @@ app.use(cors({
     credentials: true
 }))
 
+/**
+ * CREATING API
+ * - AUTH USER
+ */
+app.use("/api/auth", authRoute); 
