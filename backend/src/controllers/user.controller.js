@@ -79,11 +79,7 @@ export async function loginUser(req, res) {
             expiresIn: '3d',
         });
 
-        res.cookie("token", token, {
-            httpOnly: false,
-            secure: false,
-            sameSite: "lax"
-        });
+        res.cookie("token", token);
 
         res.status(200).json({
             message: "Login success",
