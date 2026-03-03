@@ -46,5 +46,5 @@ export async function generateInterviewReport({ resume, selfDescription, jobDesc
         }
     })
 
-    return JSON.parse(response.text)
+    return JSON.parse(response.text);   
 }
