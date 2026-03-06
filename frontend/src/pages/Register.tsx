@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/Auth.hook";
 import type { AuthFormType } from "@/types/auth.type";
+import { LoaderCircle } from "lucide-react";
 import { useState, type SetStateAction } from "react"
 import type React from "react"
 import { useForm } from "react-hook-form";
@@ -13,16 +14,20 @@ type props = {
 export default function Register({ isLogin }: props) {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<AuthFormType>();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { handleLogin } = useAuth();
 
   async function onSubmit(data: AuthFormType) {
     try {
+      setLoading(true);
       await handleLogin(data);
       navigate("/");
-      reset();  
+      reset();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -128,9 +133,10 @@ export default function Register({ isLogin }: props) {
       {/* Submit button */}
       <button
         type="submit"
-        className="w-full bg-zinc-900 text-white py-2.5 rounded-lg font-semibold hover:bg-zinc-700 transition duration-200 active:scale-101 cursor-pointer"
+        disabled={loading}
+        className="w-full bg-zinc-900 text-white py-2.5 rounded-lg font-semibold hover:bg-zinc-700 transition duration-200 active:scale-101 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLogin ? 'Sign In' : 'Sign Up'}
+        {loading ? <LoaderCircle className="flex items-center justify-center animate-spin" /> : isLogin ? "Sign In" : "Sign Up"}
       </button>
     </form >
   )

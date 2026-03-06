@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedPath from "./components/ProtectedPath";
@@ -9,7 +9,7 @@ export default function App() {
     <>
       <Routes>
         <Route element={<ProtectedRoute />} >
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
         </Route>
         <Route element={<ProtectedPath />}>
           <Route path="/login" element={<Login />} />
