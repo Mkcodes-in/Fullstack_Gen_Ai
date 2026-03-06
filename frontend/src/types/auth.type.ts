@@ -9,6 +9,12 @@ export interface LoginUserType {
     password: string;
 }
 
-export interface registerUserType extends LoginUserType{
+export interface registerUserType extends LoginUserType {
     username: string;
+}
+
+export type AuthFormType = {
+    username: string;
+    email: string;
+    password: string;
 }
