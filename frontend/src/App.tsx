@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedPath from "./components/ProtectedPath";
 
 export default function App() {
   return (
@@ -11,8 +11,9 @@ export default function App() {
         <Route element={<ProtectedRoute />} >
           <Route path="/" element={<Home />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route element={<ProtectedPath />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
       </Routes>
     </>
   )

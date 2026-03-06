@@ -1,7 +1,9 @@
+import { useAuth } from "@/hooks/Auth.hook";
 import type { AuthFormType } from "@/types/auth.type";
 import { useState, type SetStateAction } from "react"
 import type React from "react"
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type props = {
   isLogin: boolean;
@@ -11,13 +13,21 @@ type props = {
 export default function Register({ isLogin }: props) {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<AuthFormType>();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
 
-  function onSubmit(data: AuthFormType) {
-    console.log(data)
+  async function onSubmit(data: AuthFormType) {
+    try {
+      await handleLogin(data);
+      navigate("/");
+      reset();  
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    < form onSubmit={handleSubmit(onSubmit)} className="space-y-4" >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" >
       {/* Name field - only for registration */}
       {
         !isLogin && (
@@ -72,7 +82,7 @@ export default function Register({ isLogin }: props) {
             {...register("password", {
               required: "Password is required",
               minLength: {
-                value: 8,
+                value: 6,
                 message: "Password must be at least 8 characters"
               },
               // pattern: {

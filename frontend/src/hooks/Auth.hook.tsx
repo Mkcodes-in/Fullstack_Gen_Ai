@@ -27,7 +27,7 @@ export const useAuth = () => {
             setLoading(true);
             const res = await login(data);
             console.log(res);
-            setAuth(res);
+            setAuth(res.user);
             return res;
         } catch (error) {
             console.error(error);

@@ -4,7 +4,12 @@ import axios from "axios";
 
 export async function register(data: registerUserType) {
     try {
-        const res = await api.post('/api/auth/register', { data });
+        const { username, email, password } = data;
+        const res = await api.post('/api/auth/register', {
+            username,
+            email,
+            password
+        });
         return res.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -18,7 +23,11 @@ export async function register(data: registerUserType) {
 
 export async function login(data: LoginUserType) {
     try {
-        const res = await api.post('/api/auth/login', { data });
+        const { email, password } = data;
+        const res = await api.post('/api/auth/login', {
+            email,
+            password
+        });
         return res.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

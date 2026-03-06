@@ -13,15 +13,16 @@ export const AuthContext = createContext<authContextType | null>(null);
 
 export default function AuthProvider({ children }: PropsWithChildren) {
     const [auth, setAuth] = useState<authUser | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     async function fetchProfile() {
         try {
             const res = await profile();
-            console.log(res);
             setAuth(res.user);
         } catch (error) {
             console.error(error);
+        }finally{
+            setLoading(false); 
         }
     }
 
