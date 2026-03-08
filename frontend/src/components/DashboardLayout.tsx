@@ -1,6 +1,7 @@
 import { FileUser, Luggage, UploadCloud, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom";
 
 type FormValue = {
     jobDescription: string;
@@ -12,6 +13,7 @@ export default function DashboardLayout() {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormValue>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
+    const navigate = useNavigate();
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
@@ -187,6 +189,7 @@ export default function DashboardLayout() {
                             </div>
 
                             <button
+                                onClick={() => navigate("/interview")}
                                 type="submit"
                                 className="group relative inline-flex items-center gap-2 bg-indigo-600 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 cursor-pointer active:scale-102"
                             >
