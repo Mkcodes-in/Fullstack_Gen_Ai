@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronRight, Users, AlertTriangle, Calendar, TrendingUp, CheckCircle2, Code2, Globe } from 'lucide-react';
+import { Users, AlertTriangle, Calendar, TrendingUp, CheckCircle2, Code2, Globe, Clock1, SignalMedium } from 'lucide-react';
 import type { InterviewData } from '@/types/dashboard.type';
+import RenderQuestions from './RenderQuestions';
+import PreparationPlan from './PreparationPlan';
+import SkillGaps from './SkillGaps';
 
 export default function InterviewResults({ data }: { data: InterviewData }) {
-    const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [selectedCategory, setSelectedCategory] = useState('all');
-
-    const toggleExpand = (id: string) => {
-        setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }));
-    };
 
     const getSeverityColor = (severity: string) => {
         switch (severity) {
@@ -51,7 +49,7 @@ export default function InterviewResults({ data }: { data: InterviewData }) {
                     </div>
                 </div>
 
-                {/* Category Filter Pills */}
+                {/* Category Filter */}
                 <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
                     {categories.map((category) => {
                         const Icon = category.icon;
@@ -59,28 +57,22 @@ export default function InterviewResults({ data }: { data: InterviewData }) {
                             <button
                                 key={category.id}
                                 onClick={() => setSelectedCategory(category.id)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${selectedCategory === category.id
-                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
-                                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                                    }`}
+                                className={`px-2 py-1 border border-slate-200 rounded-full text-sm cursor-pointer flex items-center gap-3 font-medium whitespace-nowrap transition-all ${selectedCategory === category.id ? "bg-indigo-500 text-white" : "bg-slate-200/20"}`}
                             >
-                                <Icon className="w-4 h-4" />
+                                <Icon className='h-4 w-4' />
                                 {category.label}
-                                <span className={`text-xs px-1.5 py-0.5 rounded-full ${selectedCategory === category.id
-                                    ? 'bg-indigo-500'
-                                    : 'bg-slate-200 text-slate-600'
-                                    }`}>
+                                <span className={`text-xs px-1.5 py-0.5 rounded-full ${selectedCategory === category.id ? "bg-indigo-300" : "bg-slate-200"}`}>
                                     {category.count}
                                 </span>
                             </button>
-                        );
+                        )
                     })}
                 </div>
 
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-12 gap-6">
                     {/* Left Sidebar - Quick Stats */}
-                    <div className="col-span-3 space-y-4">
+                    <div className="hidden md:block md:col-span-3 space-y-4">
                         {/* Progress Card */}
                         <div className="bg-white rounded-xl border border-slate-200 p-4">
                             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Preparation Progress</h3>
@@ -132,10 +124,6 @@ export default function InterviewResults({ data }: { data: InterviewData }) {
                                     );
                                 })}
                             </div>
-                            <button className="w-full mt-3 text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center justify-center gap-1">
-                                View all {data.skillGaps.length} skills
-                                <ChevronRight className="w-3 h-3" />
-                            </button>
                         </div>
 
                         {/* Today's Focus */}
@@ -155,88 +143,38 @@ export default function InterviewResults({ data }: { data: InterviewData }) {
                     </div>
 
                     {/* Main Content Area */}
-                    <div className="col-span-6 space-y-4">
-                        {/* Featured Questions */}
-                        {(selectedCategory === 'all' || selectedCategory === 'technical') && (
-                            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                                <div className="p-4 border-b border-slate-100">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="font-medium text-slate-800">Technical Questions</h3>
-                                        <button className="text-xs text-indigo-600 hover:text-indigo-700">View all</button>
-                                    </div>
-                                </div>
-                                <div className="divide-y divide-slate-100">
-                                    {data.technicalQuestions.map((item, index) => (
-                                        <div key={index} className="p-4 hover:bg-slate-50">
-                                            <div className="flex items-start gap-3">
-                                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center">
-                                                    <span className="text-xs font-medium text-indigo-600">{index + 1}</span>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-slate-800 mb-1">{item.question}</p>
-                                                    <p className="text-xs text-slate-500 mb-2">{item.intention}</p>
-                                                    <button
-                                                        onClick={() => toggleExpand(`tech-${index}`)}
-                                                        className="text-xs text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
-                                                    >
-                                                        {expandedItems[`tech-${index}`] ? 'Hide' : 'Show'} suggested answer
-                                                        {expandedItems[`tech-${index}`] ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-                                                    </button>
-                                                    {expandedItems[`tech-${index}`] && (
-                                                        <div className="mt-3 p-3 bg-slate-50 rounded-lg">
-                                                            <p className="text-xs text-slate-600">{item.answer}</p>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                    <div className="col-span-12 md:col-span-6 space-y-4">
+                        <RenderQuestions
+                            questionArr={data.technicalQuestions}
+                            selectedCategory={selectedCategory}
+                            category="technical"
+                            title="Technical Questions"
+                            answerLabel="suggested answer"
+                            accentColorClass="text-indigo-600 hover:text-indigo-700"
+                            accentBgClass="bg-indigo-100"
+                        />
+
+                        <RenderQuestions
+                            questionArr={data.behaviourQuestions}
+                            selectedCategory={selectedCategory}
+                            category="behavioral"
+                            title="Behavioral Questions"
+                            answerLabel="STAR response"
+                            accentColorClass="text-purple-600 hover:text-purple-700"
+                            accentBgClass="bg-purple-100"
+                        />
+
+                        {(selectedCategory === 'all' || selectedCategory === 'skills') && (
+                            <SkillGaps data={data.skillGaps} getSeverityColor={getSeverityColor} />
                         )}
 
-                        {/* Behavioral Questions */}
-                        {(selectedCategory === 'all' || selectedCategory === 'behavioral') && (
-                            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                                <div className="p-4 border-b border-slate-100">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="font-medium text-slate-800">Behavioral Questions</h3>
-                                        <button className="text-xs text-indigo-600 hover:text-indigo-700">View all</button>
-                                    </div>
-                                </div>
-                                <div className="divide-y divide-slate-100">
-                                    {data.behaviourQuestions.map((item, index) => (
-                                        <div key={index} className="p-4 hover:bg-slate-50">
-                                            <div className="flex items-start gap-3">
-                                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
-                                                    <span className="text-xs font-medium text-purple-600">{index + 1}</span>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-slate-800 mb-1">{item.question}</p>
-                                                    <p className="text-xs text-slate-500 mb-2">{item.intention}</p>
-                                                    <button
-                                                        onClick={() => toggleExpand(`behavior-${index}`)}
-                                                        className="text-xs text-purple-600 hover:text-purple-700 flex items-center gap-1"
-                                                    >
-                                                        {expandedItems[`behavior-${index}`] ? 'Hide' : 'Show'} STAR response
-                                                        {expandedItems[`behavior-${index}`] ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-                                                    </button>
-                                                    {expandedItems[`behavior-${index}`] && (
-                                                        <div className="mt-3 p-3 bg-purple-50 rounded-lg">
-                                                            <p className="text-xs text-slate-600">{item.answer}</p>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                        {(selectedCategory === 'all' || selectedCategory === 'plan') && (
+                            <PreparationPlan data={data.preparationPlan} />
                         )}
                     </div>
 
                     {/* Right Sidebar - Recommendations */}
-                    <div className="col-span-3 space-y-4">
+                    <div className="hidden md:block md:col-span-3 space-y-4">
                         {/* Preparation Timeline */}
                         <div className="bg-white rounded-xl border border-slate-200 p-4">
                             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Prep Timeline</h3>
