@@ -28,7 +28,7 @@ interviewRoute.get("/report/:id", authMiddleware, interviewReportById);
  * @access private
  */
 
-interviewRoute.get("/", authMiddleware, getAllInterviewReport); 
+interviewRoute.get("/", authMiddleware, getAllInterviewReport);
 
 /**
  * @route GET /api/interview/resume/pdf
@@ -36,4 +36,4 @@ interviewRoute.get("/", authMiddleware, getAllInterviewReport);
  * @access private
  */
 
-interviewRoute.post("/resume/pdf/:id", authMiddleware, generateResumePdf); 
+interviewRoute.post("/resume/pdf/:id", authMiddleware, generateResumePdf);

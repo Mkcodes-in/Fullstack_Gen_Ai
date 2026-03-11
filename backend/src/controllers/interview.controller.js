@@ -4,6 +4,10 @@ import { interviewModel } from "../models/interview.model.js";
 const require = createRequire(import.meta.url);
 const pdf = require("pdf-parse");
 
+/**
+ * @description Controller for generate interview report
+ * @route POST /api/interview/
+ */
 export async function interviewController(req, res) {
     try {
         if (!req.file) {
@@ -41,6 +45,10 @@ export async function interviewController(req, res) {
     }
 }
 
+/**
+ * @description Controller for fetch report by id
+ * @route GET /api/interview/report/id
+ */
 export async function interviewReportById(req, res) {
     try {
         const interviewReport = await interviewModel.findOne({ _id: req.params.id, user: req.user._id });
@@ -64,9 +72,13 @@ export async function interviewReportById(req, res) {
     }
 }
 
+/**
+ * @description Controller for fetch all reports
+ * @route GET /api/interview/
+ */
 export async function getAllInterviewReport(req, res) {
     try {
-        const interviewReports = await interviewModel.find({ user: req.user._id }).sort({ createdAt: -1 }).select('-jobDescription -resume -selfDescription -matchScore -technicalQuestions -behaviourQuestions -skillGaps -preparationPlan -__v -user');
+        const interviewReports = await interviewModel.find({ user: req.user._id }).sort({ createdAt: -1 }).select('-jobDescription -resume -selfDescription -technicalQuestions -behaviourQuestions -skillGaps -preparationPlan -__v -user');
 
         res.status(200).json({
             message: "Interview report fetched successfully",
@@ -81,6 +93,10 @@ export async function getAllInterviewReport(req, res) {
     }
 }
 
+/**
+ * @description Controller for generate PDF report
+ * @route POST /api/interview/resume/pdf/:id
+ */
 export async function generateResumePdf(req, res) {
-    
+
 }

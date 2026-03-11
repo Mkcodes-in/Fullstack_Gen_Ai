@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 type FormValue = {
     jobDescription: string;
     selfDescription: string;
-    resume: File | null;
+    resume: File | string | Blob;
 }
 
 export default function DashboardLayout() {
@@ -44,10 +44,26 @@ export default function DashboardLayout() {
         setIsDragging(false);
     }
 
-    function onSubmit(data: FormValue) {
-        console.log(data)
-    }
+    async function onSubmit(data: FormValue) {
+        try {
+            const { jobDescription, resume, selfDescription } = data;
 
+            const formData = new FormData();
+            formData.append("jobDescription", jobDescription);
+            formData.append("selfDescription", selfDescription);
+            formData.append("resume", resume);
+
+            console.log(formData)
+            // const res = await api.post(
+            //     "/api/interview/get-resume-text",
+            //     formData
+            // );
+
+            // console.log(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="flex items-center justify-center">
             <div className="w-full max-w-6xl">
@@ -189,7 +205,7 @@ export default function DashboardLayout() {
                             </div>
 
                             <button
-                                onClick={() => navigate("/interview")}
+                                // onClick={() => navigate("/interview")}
                                 type="submit"
                                 className="group relative inline-flex items-center gap-2 bg-indigo-600 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 cursor-pointer active:scale-102"
                             >

@@ -1,10 +1,40 @@
 import DashboardLayout from '@/components/DashboardLayout';
 import '../pages/style/style.css'
+import { LogOut } from 'lucide-react';
+import RecentInterviewReports from '@/components/RecentInterviewReports';
+import { useEffect, useState } from 'react';
+import type { Reports } from '@/types/dashboard.type';
+import { getAllInterveiwReports } from '@/api/interview.api';
 
 export default function Dashboard() {
+  const [reports, setReports] = useState<Reports[]>([]);
+
+  useEffect(() => {
+    async function getReports() {
+      try {
+        const res = await getAllInterveiwReports();
+        setReports(res.interviewReports);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getReports();
+  }, []);
+
+  if (reports.length === 0) {
+    return;
+  }
+
   return (
     <div className="flex bg-gray-50 min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
+      <div className="relative max-w-5xl mx-auto px-6 py-10 space-y-10">
+        {/* Logout Action btn */}
+        <button
+          className="absolute right-0 p-2 mt-0.5 rounded-full bg-indigo-500 text-white cursor-pointer shadow-md transition-all duration-200 hover:bg-indigo-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          title="Profile / Logout"
+        >
+          <LogOut className='h-5 w-5' />
+        </button>
 
         {/* Heading */}
         <div className="space-y-5 text-center max-w-4xl mx-auto">
@@ -56,6 +86,9 @@ export default function Dashboard() {
 
         {/* Dashboard Layout */}
         <DashboardLayout />
+
+        {/* Recent or previous interview reports */}
+        <RecentInterviewReports interviewReports={reports} />
       </div>
     </div>
   );

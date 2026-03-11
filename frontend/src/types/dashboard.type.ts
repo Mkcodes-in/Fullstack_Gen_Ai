@@ -6,7 +6,7 @@ export interface Question {
 
 export interface SkillGap {
     skill: string;
-    serverity: 'low' | 'medium' | 'high';
+    serverity: string;
 }
 
 export interface PreparationDay {
@@ -25,4 +25,11 @@ export interface InterviewData {
     skillGaps: SkillGap[];
     preparationPlan: PreparationDay[];
     title: string;
+}
+
+export interface Reports{
+    _id: string; 
+    matchScore: number; 
+    title: string; 
+    createdAt: string;
 }

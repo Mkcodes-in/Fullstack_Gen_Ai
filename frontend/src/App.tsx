@@ -12,7 +12,7 @@ export default function App() {
       <Routes>
         <Route element={<ProtectedRoute />} >
           <Route path="/" element={<Dashboard />} />
-          <Route path="/interview" element={<InterviewResults data={result}/>} />
+          <Route path="/interview/:id" element={<InterviewResults data={result}/>} />
         </Route>
         <Route element={<ProtectedPath />}>
           <Route path="/login" element={<Login />} />
