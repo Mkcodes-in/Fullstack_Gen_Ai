@@ -6,6 +6,7 @@ import PreparationPlan from './PreparationPlan';
 import SkillGaps from './SkillGaps';
 import { useParams } from 'react-router-dom';
 import { getInterviewReport } from '@/api/interview.api';
+import Loader from './Loader';
 
 export default function InterviewResults() {
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -25,9 +26,7 @@ export default function InterviewResults() {
         getReport();
     }, [id]);
 
-    if(!data){
-        return <p>Report Loading...</p>
-    }
+    if (!data) return <Loader />;
 
     const getSeverityColor = (severity: string) => {
         switch (severity) {
@@ -37,6 +36,15 @@ export default function InterviewResults() {
             default: return { bg: 'bg-slate-500', light: 'bg-slate-100', text: 'text-slate-600', border: 'border-slate-200' };
         }
     };
+
+    const getScoreMessage = (score: number) => {
+        if (score >= 90) return "Outstanding! You're a top performer!"
+        if (score >= 80) return "Excellent! Strong interview readiness"
+        if (score >= 70) return "Good progress! Keep pushing"
+        if (score >= 60) return "Getting there! Focus on weak areas"
+        if (score >= 50) return "Need practice. Let's work on it"
+        return "Starting point. Every expert was once a beginner"
+    }
 
     const categories = [
         { id: 'all', label: 'All Insights', icon: Globe, count: data.technicalQuestions.length + data.behaviourQuestions.length + data.skillGaps.length },
@@ -61,11 +69,19 @@ export default function InterviewResults() {
                                 <TrendingUp className="w-4 h-4 text-indigo-300" />
                             </div>
                             <div className="text-4xl font-bold mb-1">{data.matchScore}%</div>
-                            <div className="text-indigo-200 text-sm mb-4">Excellent alignment</div>
-                            <div className="w-full h-1.5 bg-indigo-500/50 rounded-full overflow-hidden">
-                                <div className="h-full w-[95%] bg-white rounded-full" />
+                            <div className="text-indigo-200 text-sm mb-4">
+                                {getScoreMessage(data.matchScore)}
                             </div>
-                            <p className="text-xs text-indigo-200 mt-3">Top 5% of candidates</p>
+
+                            <div className="w-full h-1.5 bg-indigo-500/50 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-white rounded-full transition-all duration-500"
+                                    style={{ width: `${data.matchScore}%` }}
+                                />
+                            </div>
+                            <p className="text-xs text-indigo-200 mt-3">
+                                Top {Math.max(100 - data.matchScore, 5)}% of candidates
+                            </p>
                         </div>
                     </div>
                 </div>

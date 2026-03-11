@@ -13,7 +13,7 @@ type FormValue = {
 export default function DashboardLayout() {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormValue>();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [Loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const navigate = useNavigate();
 
@@ -64,6 +64,7 @@ export default function DashboardLayout() {
             setLoading(false);
         }
     }
+
     return (
         <div className="flex items-center justify-center">
             <div className="w-full max-w-6xl">
@@ -205,12 +206,19 @@ export default function DashboardLayout() {
                             </div>
 
                             <button
-                                // onClick={() => navigate("/interview")}
                                 type="submit"
                                 className="group relative inline-flex items-center gap-2 bg-indigo-600 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 cursor-pointer active:scale-102"
                             >
-                                {Loading ? <p className="flex items-center justify-center animate-spin text-white"><Loader2 className="h-5 w-5" /></p> : <span>Generate Interview Plan</span>}
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                {loading ? (
+                                    <p className="flex items-center justify-center animate-spin text-white">
+                                        <Loader2 className="h-5 w-5" />
+                                    </p>
+                                ) : (
+                                    <span className="flex items-center gap-2">
+                                        Generate Interview Plan
+                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </span>
+                                )}
                             </button>
                         </div>
                     </form>
