@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedPath from "./components/ProtectedPath";
 import InterviewResults from "./components/InterviewResult";
 import { Toaster } from "react-hot-toast";
+import ErrorPage from "./pages/ErrorPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route element={<ProtectedPath />}>
           <Route path="/login" element={<Login />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
   )

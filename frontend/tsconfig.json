@@ -9,11 +9,13 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "types": [
+      "react",
+      "react-dom"
+    ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   }
 }

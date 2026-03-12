@@ -4,14 +4,16 @@ import type { InterviewData } from '@/types/dashboard.type';
 import RenderQuestions from './RenderQuestions';
 import PreparationPlan from './PreparationPlan';
 import SkillGaps from './SkillGaps';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getInterviewReport } from '@/api/interview.api';
 import Loader from './Loader';
+import toast from 'react-hot-toast';
 
 export default function InterviewResults() {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [data, setData] = useState<InterviewData | null>(null);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getReport() {
@@ -20,7 +22,10 @@ export default function InterviewResults() {
                 const res = await getInterviewReport(id);
                 setData(res.interviewReport)
             } catch (error) {
-                console.log(error);
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                    navigate('/');
+                }
             }
         }
         getReport();
