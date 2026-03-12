@@ -4,6 +4,7 @@ import { LoaderCircle } from "lucide-react";
 import { useState, type SetStateAction } from "react"
 import type React from "react"
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 type props = {
@@ -16,16 +17,26 @@ export default function Register({ isLogin }: props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { handleLogin } = useAuth();
+  const { handleLogin, handleRegister } = useAuth();
 
   async function onSubmit(data: AuthFormType) {
     try {
-      setLoading(true);
-      await handleLogin(data);
-      navigate("/");
-      reset();
+      if (isLogin) {
+        setLoading(true);
+        const res = await handleLogin(data);
+        toast.success(res.message);
+        navigate("/");
+        reset();
+      } else {
+        setLoading(true);
+        const res = await handleRegister(data);
+        toast.success(res.message);
+        reset();
+      }
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }

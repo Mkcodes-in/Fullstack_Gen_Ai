@@ -26,11 +26,13 @@ export const useAuth = () => {
         try {
             setLoading(true);
             const res = await login(data);
-            console.log(res);
             setAuth(res.user);
             return res;
         } catch (error) {
-            console.error(error);
+            if(error instanceof Error){
+                console.log(error.message);
+            }
+            throw error;
         } finally {
             setLoading(false);
         }

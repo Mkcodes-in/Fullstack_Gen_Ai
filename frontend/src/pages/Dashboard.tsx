@@ -5,12 +5,14 @@ import RecentInterviewReports from '@/components/RecentInterviewReports';
 import { useEffect, useState } from 'react';
 import type { Reports } from '@/types/dashboard.type';
 import { getAllInterveiwReports } from '@/api/interview.api';
-import { logout } from '@/api/auth.api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/Auth.hook';
+import toast from 'react-hot-toast';
 
 export default function Dashboard() {
   const [reports, setReports] = useState<Reports[]>([]);
   const navigate = useNavigate();
+  const { handleLogout: logoutUser } = useAuth();
 
   useEffect(() => {
     async function getReports() {
@@ -24,12 +26,15 @@ export default function Dashboard() {
     getReports();
   }, []);
 
-  async function handleLogout() {
+  async function onLogout() {
     try {
-      await logout();
+      const res = await logoutUser();
+      toast.success(res.message);
       navigate('/login', { replace: true });
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     }
   }
 
@@ -38,7 +43,7 @@ export default function Dashboard() {
       <div className="relative max-w-5xl mx-auto px-6 py-10 space-y-10">
         {/* Logout Action btn */}
         <button
-          onClick={handleLogout}
+          onClick={onLogout}
           className="absolute right-0 p-2 mt-0.5 rounded-full bg-indigo-500 text-white cursor-pointer shadow-md transition-all duration-200 hover:bg-indigo-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           title="Profile / Logout"
         >
