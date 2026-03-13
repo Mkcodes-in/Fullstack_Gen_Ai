@@ -8,6 +8,7 @@ const ai = new GoogleGenAI({
 const interviewReportSchema = z.object({
     title: z.string().min(1),
     matchScore: z.number().min(0).max(100),
+    atsScore: z.number().min(0).max(100),
     technicalQuestions: z.array(
         z.object({
             question: z.string().min(1),
@@ -42,6 +43,7 @@ const interviewReportResponseSchema = {
     required: [
         "title",
         "matchScore",
+        "atsScore",
         "technicalQuestions",
         "behaviourQuestions",
         "skillGaps",
@@ -55,6 +57,10 @@ const interviewReportResponseSchema = {
         matchScore: {
             type: "NUMBER",
             description: "A number from 0 to 100 for profile fit"
+        },
+        atsScore: {
+            type: "NUMBER",
+            description: "A number from 0 to 100 for resume ATS compatibility"
         },
         technicalQuestions: {
             type: "ARRAY",
@@ -120,7 +126,20 @@ function extractJsonText(rawText) {
 }
 
 export async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
-    const prompt = `Generate an interview report JSON only. Do not add markdown or explanations.\n\nResume:\n${resume}\n\nSelf Description:\n${selfDescription}\n\nJob Description:\n${jobDescription}`;
+    const prompt = `Generate an interview report JSON only. Do not add markdown or explanations.
+
+Include:
+- matchScore: overall profile fit score from 0 to 100
+- atsScore: resume ATS compatibility score from 0 to 100 based on keyword alignment, clarity, and relevance
+
+Resume:
+${resume}
+
+Self Description:
+${selfDescription}
+
+Job Description:
+${jobDescription}`;
 
     const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",

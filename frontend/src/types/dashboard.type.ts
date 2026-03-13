@@ -20,6 +20,7 @@ export interface InterviewData {
     resume: string;
     selfDescription: string;
     matchScore: number;
+    atsScore: number;
     technicalQuestions: Question[];
     behaviourQuestions: Question[];
     skillGaps: SkillGap[];

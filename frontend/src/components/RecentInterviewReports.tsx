@@ -28,7 +28,7 @@ export default function RecentInterviewReports({ interviewReports }: props) {
                     const time = dayjs(createdDate).fromNow();
 
                     return (
-                        <div key={report._id} className="space-y-4">
+                        <div key={report._id} className="mt-2">
                             <div className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
 
                                 <div className="flex flex-col gap-1">

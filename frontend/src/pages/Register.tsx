@@ -15,20 +15,17 @@ type props = {
 export default function Register({ isLogin }: props) {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<AuthFormType>();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { handleLogin, handleRegister } = useAuth();
+  const { handleLogin, handleRegister, loading } = useAuth();
 
   async function onSubmit(data: AuthFormType) {
     try {
       if (isLogin) {
-        setLoading(true);
         const res = await handleLogin(data);
         toast.success(res.message);
         navigate("/");
         reset();
       } else {
-        setLoading(true);
         const res = await handleRegister(data);
         toast.success(res.message);
         reset();
@@ -37,8 +34,6 @@ export default function Register({ isLogin }: props) {
       if (error instanceof Error) {
         toast.error(error.message);
       }
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -48,7 +43,7 @@ export default function Register({ isLogin }: props) {
       {
         !isLogin && (
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="username" className="block text-sm font-medium text-indigo-700 mb-1">
               Full Name
             </label>
             <input
@@ -57,7 +52,7 @@ export default function Register({ isLogin }: props) {
               name="username"
               id="username"
               placeholder="John Doe"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-zinc-900 focus:border-zinc-500 outline-none transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-900 focus:border-indigo-500 outline-none transition"
             />
             {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
           </div>
@@ -66,7 +61,7 @@ export default function Register({ isLogin }: props) {
 
       {/* Email field */}
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium text-indigo-700 mb-1">
           Email Address
         </label>
         <input
@@ -80,7 +75,7 @@ export default function Register({ isLogin }: props) {
           type="email"
           id="email"
           placeholder="you@example.com"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-900 focus:border-indigo-500 outline-none transition"
         />
 
         {errors.email && (
@@ -90,7 +85,7 @@ export default function Register({ isLogin }: props) {
 
       {/* Password field */}
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium text-indigo-700 mb-1">
           Password
         </label>
         <div className="relative">
@@ -110,7 +105,7 @@ export default function Register({ isLogin }: props) {
             type={showPassword ? "text" : "password"}
             id="password"
             placeholder="••••••••"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-900 focus:border-indigo-500 outline-none transition"
           />
 
           <button
@@ -145,7 +140,7 @@ export default function Register({ isLogin }: props) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-zinc-900 text-white py-2.5 rounded-lg font-semibold hover:bg-zinc-700 transition duration-200 active:scale-101 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-indigo-900 text-white py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200 active:scale-101 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         {loading ? <LoaderCircle className="flex items-center justify-center animate-spin" /> : isLogin ? "Sign In" : "Sign Up"}
       </button>

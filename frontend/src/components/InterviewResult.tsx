@@ -15,6 +15,7 @@ export default function InterviewResults() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    console.log(data)
     useEffect(() => {
         async function getReport() {
             try {
@@ -67,26 +68,71 @@ export default function InterviewResults() {
 
                     {/* Match Score Card */}
                     <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                        {/* Modern Background Elements */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl" />
+
                         <div className="relative">
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-indigo-100 text-sm">Match Score</span>
-                                <TrendingUp className="w-4 h-4 text-indigo-300" />
-                            </div>
-                            <div className="text-4xl font-bold mb-1">{data.matchScore}%</div>
-                            <div className="text-indigo-200 text-sm mb-4">
-                                {getScoreMessage(data.matchScore)}
+                            {/* Modern Header */}
+                            <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                        <TrendingUp className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                        <span className="text-sm font-medium text-indigo-100">Profile Strength</span>
+                                        <div className="text-xs text-indigo-300">Combined Analysis</div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="w-full h-1.5 bg-indigo-500/50 rounded-full overflow-hidden">
-                                <div
-                                    className="h-full bg-white rounded-full transition-all duration-500"
-                                    style={{ width: `${data.matchScore}%` }}
-                                />
+                            {/* Main Score with Ring */}
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <div className="text-5xl font-bold tracking-tight">
+                                        {Math.round((data.matchScore + data.atsScore) / 2)}
+                                        <span className="text-xl text-indigo-300 ml-1">/100</span>
+                                    </div>
+                                    <div className="text-sm text-indigo-200 mt-1">
+                                        {getScoreMessage((data.matchScore + data.atsScore) / 2)}
+                                    </div>
+                                </div>
                             </div>
-                            <p className="text-xs text-indigo-200 mt-3">
-                                Top {Math.max(100 - data.matchScore, 5)}% of candidates
-                            </p>
+
+                            {/* Modern Score Cards */}
+                            <div className="grid grid-cols-2 gap-3 mb-4">
+                                <div className="bg-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/10">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-xs text-indigo-200">Match</span>
+                                        <span className="text-lg font-semibold">{data.matchScore}%</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-white rounded-full transition-all"
+                                            style={{ width: `${data.matchScore}%` }}
+                                        />
+                                    </div>
+                                    <div className="text-[10px] text-indigo-300 mt-2">
+                                        {data.matchScore >= 80 ? 'Strong' : data.matchScore >= 60 ? 'Good' : 'Needs work'}
+                                    </div>
+                                </div>
+
+                                <div className="bg-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/10">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-xs text-indigo-200">ATS</span>
+                                        <span className="text-lg font-semibold">{data.atsScore}%</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-white rounded-full transition-all"
+                                            style={{ width: `${data.atsScore}%` }}
+                                        />
+                                    </div>
+                                    <div className="text-[10px] text-indigo-300 mt-2">
+                                        {data.atsScore >= 80 ? 'Optimal' : data.atsScore >= 60 ? 'Average' : 'Improve'}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
