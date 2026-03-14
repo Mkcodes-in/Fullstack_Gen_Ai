@@ -1,19 +1,5 @@
 import mongoose from 'mongoose';
 
-/**
- * -> user upload
- * - job description
- * - resume text
- * - self description
- * - score
- * 
- * -> ai generate
- * - Technical questions: []
- * - Bihaviour questions: []
- * - skill gaps: []
- * - preparation plan: [{}]
- */
-
 const technicalQuestionSchema = new mongoose.Schema({
     question: {
         type: String,

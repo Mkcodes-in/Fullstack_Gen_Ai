@@ -55,3 +55,21 @@ export async function getAllInterveiwReports() {
         throw new Error("Something went wrong");
     }
 }
+
+/**
+ * @description generate interview PDF
+ * @route POST /api/interview/reprot/:id
+ */
+export async function getInterviewPDF(id: string) {
+    try {
+        const res = await api.post(`/api/interview/resume/pdf/${id}`, {}, { responseType: "blob" });
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(
+                error.response?.data?.message || "Failed to generate PDF"
+            )
+        }
+        throw new Error("Something went wrong");
+    }
+}

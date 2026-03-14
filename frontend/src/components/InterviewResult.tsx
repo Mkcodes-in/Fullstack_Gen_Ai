@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Users, AlertTriangle, Calendar, TrendingUp, CheckCircle2, Code2, Globe } from 'lucide-react';
+import { Users, AlertTriangle, Calendar, TrendingUp, CheckCircle2, Code2, Globe, Download } from 'lucide-react';
 import type { InterviewData } from '@/types/dashboard.type';
 import RenderQuestions from './RenderQuestions';
 import PreparationPlan from './PreparationPlan';
 import SkillGaps from './SkillGaps';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getInterviewReport } from '@/api/interview.api';
+import { getInterviewPDF, getInterviewReport } from '@/api/interview.api';
 import Loader from './Loader';
 import toast from 'react-hot-toast';
 
@@ -14,6 +14,9 @@ export default function InterviewResults() {
     const [data, setData] = useState<InterviewData | null>(null);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    if (!id) return;
 
     useEffect(() => {
         async function getReport() {
@@ -30,6 +33,20 @@ export default function InterviewResults() {
         }
         getReport();
     }, [id]);
+
+    async function handleGeneratePdf(id: string) {
+        try {
+            setLoading(true);
+            const blob = await getInterviewPDF(id);
+            const file = new Blob([blob], { type: "application/pdf" });
+            const url = URL.createObjectURL(file);
+            window.open(url, "_blank");
+        } catch (error: any) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     if (!data) return <Loader />;
 
@@ -85,7 +102,7 @@ export default function InterviewResults() {
                                 </div>
                             </div>
 
-                            {/* Main Score with Ring */}
+                            {/* Main Score */}
                             <div className="flex items-center justify-between mb-6">
                                 <div>
                                     <div className="text-5xl font-bold tracking-tight">
@@ -98,19 +115,21 @@ export default function InterviewResults() {
                                 </div>
                             </div>
 
-                            {/* Modern Score Cards */}
+                            {/* Score Cards */}
                             <div className="grid grid-cols-2 gap-3 mb-4">
                                 <div className="bg-white/5 rounded-xl p-3 backdrop-blur-sm border border-white/10">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="text-xs text-indigo-200">Match</span>
                                         <span className="text-lg font-semibold">{data.matchScore}%</span>
                                     </div>
+
                                     <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-white rounded-full transition-all"
                                             style={{ width: `${data.matchScore}%` }}
                                         />
                                     </div>
+
                                     <div className="text-[10px] text-indigo-300 mt-2">
                                         {data.matchScore >= 80 ? 'Strong' : data.matchScore >= 60 ? 'Good' : 'Needs work'}
                                     </div>
@@ -121,17 +140,27 @@ export default function InterviewResults() {
                                         <span className="text-xs text-indigo-200">ATS</span>
                                         <span className="text-lg font-semibold">{data.atsScore}%</span>
                                     </div>
+
                                     <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-white rounded-full transition-all"
                                             style={{ width: `${data.atsScore}%` }}
                                         />
                                     </div>
+
                                     <div className="text-[10px] text-indigo-300 mt-2">
                                         {data.atsScore >= 80 ? 'Optimal' : data.atsScore >= 60 ? 'Average' : 'Improve'}
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Improve & Generate PDF Button */}
+                            <button
+                                onClick={() => handleGeneratePdf(id)}
+                                className="bg-white text-indigo-600 px-4 py-2 rounded-lg w-full cursor-pointer"
+                            >
+                                {loading ? "Generating..." : "Improve & Generate PDF"}
+                            </button>
                         </div>
                     </div>
                 </div>

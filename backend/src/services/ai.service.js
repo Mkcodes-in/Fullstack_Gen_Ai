@@ -170,7 +170,7 @@ ${jobDescription}`;
     return validated.data;
 }
 
-async function generatePdfFromHtml(htmlContent) {
+export async function generatePdfFromHtml(htmlContent) {
     const browser = await puppeteer.launch({ headless: "new" });
 
     const page = await browser.newPage();
@@ -202,7 +202,7 @@ export async function generatePdf({ resume, selfDescription, jobDescription }) {
         )
     });
 
-   const prompt = `
+    const prompt = `
 You are a professional resume writer.
 
 TASK:
@@ -241,8 +241,5 @@ Return ONLY a JSON object:
     });
 
     const jsonContent = JSON.parse(res.text);
-
-    const pdfBuffer = await generatePdfFromHtml(jsonContent.html);
-
-    return pdfBuffer;
+    return jsonContent.html;
 }
