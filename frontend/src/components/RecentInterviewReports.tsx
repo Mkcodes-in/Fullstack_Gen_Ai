@@ -29,7 +29,7 @@ export default function RecentInterviewReports({ interviewReports }: props) {
 
                     return (
                         <div key={report._id} className="mt-2">
-                            <div className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <div className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
 
                                 <div className="flex flex-col gap-1">
                                     <p className="font-semibold text-slate-800 text-base">

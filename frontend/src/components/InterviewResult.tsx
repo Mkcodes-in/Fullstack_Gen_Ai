@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Users, AlertTriangle, Calendar, TrendingUp, CheckCircle2, Code2, Globe, Download } from 'lucide-react';
+import { Users, AlertTriangle, Calendar, TrendingUp, CheckCircle2, Code2, Globe } from 'lucide-react';
 import type { InterviewData } from '@/types/dashboard.type';
 import RenderQuestions from './RenderQuestions';
 import PreparationPlan from './PreparationPlan';
@@ -41,8 +41,10 @@ export default function InterviewResults() {
             const file = new Blob([blob], { type: "application/pdf" });
             const url = URL.createObjectURL(file);
             window.open(url, "_blank");
-        } catch (error: any) {
-            console.log(error);
+        } catch (error) {
+            if(error instanceof Error){
+                toast.error(error.message); 
+            }
         } finally {
             setLoading(false);
         }
@@ -77,13 +79,13 @@ export default function InterviewResults() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50/40 via-white to-purple-50/40">
+        <div className="min-h-screen bg-linear-to-br from-indigo-50/40 via-white to-purple-50/40">
             <div className="max-w-6xl mx-auto px-6 py-8">
                 {/* Header Section with Match Score */}
                 <div className="grid gap-6 mb-8">
 
                     {/* Match Score Card */}
-                    <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden">
+                    <div className="bg-linear-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden">
                         {/* Modern Background Elements */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
                         <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl" />
@@ -233,7 +235,7 @@ export default function InterviewResults() {
                                         <div key={index} className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50">
                                             <div className={`w-2 h-2 rounded-full ${colors.bg}`} />
                                             <span className="text-xs text-slate-600 flex-1 truncate">{gap.skill}</span>
-                                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${colors.light} ${colors.text}`}>
+                                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full uppercase ${colors.light} ${colors.text}`}>
                                                 {gap.serverity}
                                             </span>
                                         </div>
@@ -243,7 +245,7 @@ export default function InterviewResults() {
                         </div>
 
                         {/* Today's Focus */}
-                        <div className="bg-gradient-to-br from-indigo-50 to-white rounded-xl border border-indigo-100 p-4">
+                        <div className="bg-linear-to-br from-indigo-50 to-white rounded-xl border border-indigo-100 p-4">
                             <div className="flex items-center gap-2 mb-3">
                                 <div className="p-1.5 rounded-lg bg-indigo-100">
                                     <Calendar className="w-3 h-3 text-indigo-600" />
@@ -297,7 +299,7 @@ export default function InterviewResults() {
                             <div className="space-y-3">
                                 {data.preparationPlan.map((day) => (
                                     <div key={day.day} className="flex items-start gap-3">
-                                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center">
+                                        <div className="shrink-0 w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center">
                                             <span className="text-xs font-medium text-indigo-600">{day.day}</span>
                                         </div>
                                         <div>
@@ -310,23 +312,23 @@ export default function InterviewResults() {
                         </div>
 
                         {/* Recommended Resources */}
-                        <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl p-4 text-white">
+                        <div className="bg-linear-to-br from-indigo-600 to-indigo-700 rounded-xl p-4 text-white">
                             <h3 className="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3">Pro Tips</h3>
                             <ul className="space-y-2">
                                 <li className="flex items-start gap-2 text-xs">
-                                    <div className="flex-shrink-0 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center mt-0.5">
+                                    <div className="shrink-0 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center mt-0.5">
                                         <CheckCircle2 className="w-3 h-3" />
                                     </div>
                                     <span>Practice with a timer to simulate real interview pressure</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-xs">
-                                    <div className="flex-shrink-0 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center mt-0.5">
+                                    <div className="shrink-0 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center mt-0.5">
                                         <CheckCircle2 className="w-3 h-3" />
                                     </div>
                                     <span>Record yourself to analyze communication style</span>
                                 </li>
                                 <li className="flex items-start gap-2 text-xs">
-                                    <div className="flex-shrink-0 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center mt-0.5">
+                                    <div className="shrink-0 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center mt-0.5">
                                         <CheckCircle2 className="w-3 h-3" />
                                     </div>
                                     <span>Review skill gaps daily for better retention</span>

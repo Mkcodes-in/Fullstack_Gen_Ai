@@ -3,22 +3,25 @@ import '../pages/style/style.css'
 import { LogOut } from 'lucide-react';
 import RecentInterviewReports from '@/components/RecentInterviewReports';
 import { useEffect, useState } from 'react';
-import type { Reports } from '@/types/dashboard.type';
-import { getAllInterveiwReports } from '@/api/interview.api';
+import type { Resume, Reports } from '@/types/dashboard.type';
+import { getAllInterviewPDF, getAllInterviewReports } from '@/api/interview.api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/Auth.hook';
 import toast from 'react-hot-toast';
+import Resumes from '@/components/Resumes';
 
 export default function Dashboard() {
   const [reports, setReports] = useState<Reports[]>([]);
+  const [resume, setResume] = useState<Resume[]>([]);
   const navigate = useNavigate();
   const { handleLogout: logoutUser } = useAuth();
 
   useEffect(() => {
     async function getReports() {
       try {
-        const res = await getAllInterveiwReports();
-        setReports(res.interviewReports);
+        const [resportResponse, resumeResponse] = await Promise.all([getAllInterviewReports(), getAllInterviewPDF()]);
+        setReports(resportResponse.interviewReports);
+        setResume(resumeResponse.allResumes);
       } catch (error) {
         console.log(error);
       }
@@ -59,7 +62,7 @@ export default function Dashboard() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-500 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
               </span>
-              <span className="text-sm font-medium bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">
+              <span className="text-sm font-medium bg-linear-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent">
                 AI-Powered Interview Preparation
               </span>
             </span>
@@ -67,12 +70,12 @@ export default function Dashboard() {
 
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-gray-700 via-gray-800 to-gray-900 bg-clip-text text-transparent">
               Create Your{" "}
             </span>
             <br className="hidden md:block" />
             <span className="relative">
-              <span className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent animate-gradient">
+              <span className="bg-linear-to-r from-indigo-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent animate-gradient">
                 Personalized Interview Plan
               </span>
             </span>
@@ -84,15 +87,15 @@ export default function Dashboard() {
             description. Our{" "}
             <span className="text-indigo-600 font-semibold relative group">
               advanced AI
-              <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-indigo-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-indigo-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
             </span>{" "}
             will analyze your profile and generate a comprehensive interview preparation
             report including{" "}
-            <span className="text-transparent bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text font-semibold">
+            <span className="text-transparent bg-linear-to-r from-indigo-600 to-indigo-500 bg-clip-text font-semibold">
               match score, technical questions, behavioral questions,
             </span>{" "}
             and a{" "}
-            <span className="text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text font-semibold">
+            <span className="text-transparent bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text font-semibold">
               focused preparation plan
             </span>.
           </p>
@@ -103,6 +106,9 @@ export default function Dashboard() {
 
         {/* Recent or previous interview reports */}
         <RecentInterviewReports interviewReports={reports} />
+
+        {/* Resumes */}
+        <Resumes resumes={resume} />
       </div>
     </div>
   );

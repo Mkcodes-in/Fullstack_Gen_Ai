@@ -73,7 +73,7 @@ export default function DashboardLayout() {
                         <div className="grid lg:grid-cols-2 gap-8">
                             {/* LEFT SIDE - Job Description */}
                             <div className="space-y-6">
-                                <div className="bg-gradient-to-br from-indigo-50/50 to-white rounded-xl p-6 border border-indigo-100/50">
+                                <div className="bg-linear-to-br from-indigo-50/50 to-white rounded-xl p-6 border border-indigo-100/50">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="p-2.5 rounded-full bg-indigo-500 text-white">
                                             <Luggage className="w-5 h-5" />
@@ -104,7 +104,7 @@ export default function DashboardLayout() {
                             {/* RIGHT SIDE - Resume & Self Description */}
                             <div className="space-y-6">
                                 {/* Resume Upload */}
-                                <div className="bg-gradient-to-br from-indigo-50/50 to-white rounded-xl p-6 border border-indigo-100/50">
+                                <div className="bg-linear-to-br from-indigo-50/50 to-white rounded-xl p-6 border border-indigo-100/50">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="p-2.5 rounded-full bg-indigo-500 text-white">
                                             <FileUser className="w-5 h-5" />
@@ -134,7 +134,7 @@ export default function DashboardLayout() {
                                             onChange={handleChange}
                                         />
 
-                                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/5 to-indigo-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                                        <div className="absolute inset-0 bg-linear-to-r from-indigo-500/0 via-indigo-500/5 to-indigo-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
                                         {selectedFile ? (
                                             <>
@@ -165,7 +165,7 @@ export default function DashboardLayout() {
                                 </div>
 
                                 {/* Self Description */}
-                                <div className="bg-gradient-to-br from-indigo-50/50 to-white rounded-xl p-6 border border-indigo-100/50">
+                                <div className="bg-linear-to-br from-indigo-50/50 to-white rounded-xl p-6 border border-indigo-100/50">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="p-2.5 rounded-full bg-indigo-500 text-white">
                                             <Sparkles className="w-5 h-5" />
@@ -198,9 +198,9 @@ export default function DashboardLayout() {
                         <div className="pt-8 gap-4 sm:flex items-center justify-between">
                             <div className="flex items-center gap-2 text-sm text-slate-500">
                                 <div className="flex -space-x-2">
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 border-2 border-white" />
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 border-2 border-white" />
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-pink-500 border-2 border-white" />
+                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-indigo-400 to-indigo-500 border-2 border-white" />
+                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-purple-400 to-purple-500 border-2 border-white" />
+                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-pink-400 to-pink-500 border-2 border-white" />
                                 </div>
                                 <span>Trusted by 10,000+ job seekers</span>
                             </div>

@@ -196,9 +196,9 @@ export async function showResumePdf(req, res) {
  * @description controller for get all ai generated PDFs
  * @route GET /api/interview/resume/pdf/
  */
-export async function getallGeneratedPdf(req, res) {
+export async function getAllGeneratedPdf(req, res) {
     try {
-        const allResumes = await resumeModel.find({ userId: req.user._id }).populate({path: "interviewReportId", select: "-jobDescription -resume -selfDescription -technicalQuestions -behaviourQuestions -skillGaps -preparationPlan -matchScore -atsScore -user"}).select("-__v -userId -_id -resumeHTML");
+        const allResumes = await resumeModel.find({ userId: req.user._id }).populate({ path: "interviewReportId", select: "-jobDescription -resume -selfDescription -technicalQuestions -behaviourQuestions -skillGaps -preparationPlan -matchScore -atsScore -user" }).select("-__v -userId -_id -resumeHTML");
 
         if (allResumes.length === 0) {
             return res.status(404).json({

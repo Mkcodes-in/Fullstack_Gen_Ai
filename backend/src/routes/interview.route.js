@@ -1,6 +1,6 @@
 import express from 'express';
 import { authMiddleware } from '../middleware/auth.middleware.js';
-import { interviewController, interviewReportById, getAllInterviewReport, generateResumePdf, showResumePdf, getallGeneratedPdf } from '../controllers/interview.controller.js';
+import { interviewController, interviewReportById, getAllInterviewReport, generateResumePdf, showResumePdf, getAllGeneratedPdf } from '../controllers/interview.controller.js';
 import { upload } from '../middleware/file.middleware.js';
 
 export const interviewRoute = express.Router();
@@ -49,4 +49,4 @@ interviewRoute.get("/resume/pdf/:id", authMiddleware, showResumePdf);
  * @description get all interview reports of logged in user.
  * @access private
  */
-interviewRoute.get("/resume/pdf", authMiddleware, getallGeneratedPdf);
+interviewRoute.get("/resume/pdf", authMiddleware, getAllGeneratedPdf);
