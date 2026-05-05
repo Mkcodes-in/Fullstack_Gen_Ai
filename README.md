@@ -2,6 +2,10 @@
 
 An AI-powered web application that analyzes a candidate's resume against a target job description, calculates ATS compatibility, identifies skill gaps, and generates an optimized resume tailored for the job.
 
+
+### Demo Video
+https://github.com/user-attachments/assets/2796f5ff-55cf-44b8-9fe2-56dda85033a9
+
 ---
 
 ## Features
